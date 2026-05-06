@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استبيان الدراسة الإدارية والتنظيمية - تكاليف | دراسات الجدوى المصغرة</title>
+    <!-- Bootstrap RTL -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- SheetJS -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <!-- html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #1e4a3b 0%, #2d6a4e 100%);
+            min-height: 100vh;
+            color: #1e3a3a;
+            padding: 20px;
+        }
+        
+        .main-header {
+            background: linear-gradient(135deg, #0e3b2c 0%, #1b5e3f 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 50px 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-bottom: 3px solid #52b788;
+        }
+        
+        .company-badge {
+            background: rgba(82, 183, 136, 0.3);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-weight: 600;
+            border: 1px solid #52b788;
+            color: white;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+            background-color: #f8faf8;
+            border: 1px solid #e4f2e4;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #1e4a3b 0%, #2d6a4e 100%);
+            color: white;
+            border-radius: 20px 20px 0 0 !important;
+            padding: 1rem 2rem;
+            font-weight: 600;
+            border-bottom: 2px solid #52b788;
+        }
+        
+        .btn-custom {
+            background: #52b788;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid #1e4a3b;
+        }
+        
+        .btn-custom:hover {
+            background: #2d6a4e;
+            transform: scale(1.05);
+            color: white;
+            box-shadow: 0 5px 20px rgba(82, 183, 136, 0.4);
+        }
+        
+        .btn-excel {
+            background: #1e4a3b;
+            color: white;
+            border: 2px solid #52b788;
+        }
+        
+        .btn-excel:hover {
+            background: #2d6a4e;
+            color: white;
+        }
+        
+        .btn-pdf {
+            background: #4a6b5a;
+            color: white;
+            border: 2px solid #52b788;
+        }
+        
+        .btn-pdf:hover {
+            background: #1e4a3b;
+            color: white;
+        }
+        
+        .form-label {
+            color: #2d6a4e;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e4f2e4;
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #52b788;
+            box-shadow: 0 0 0 0.2rem rgba(82, 183, 136, 0.25);
+        }
+        
+        .section-title {
+            color: #1e4a3b;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-right: 4px solid #52b788;
+            padding-right: 1rem;
+        }
+        
+        .data-entry-section {
+            background: #f0f7f0;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 3px solid #52b788;
+        }
+        
+        .client-info-card {
+            background: linear-gradient(135deg, #f8faf8 0%, #ffffff 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px solid #52b788;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        
+        .client-info-title {
+            color: #1e4a3b;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .client-info-title i {
+            color: #52b788;
+            margin-left: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .currency-badge {
+            background: #52b788;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .info-text {
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+        
+        .required-field::after {
+            content: "*";
+            color: #dc3545;
+            margin-right: 4px;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #0e3b2c 0%, #1b5e3f 100%);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+            border-radius: 50px 50px 0 0;
+            border-top: 3px solid #52b788;
+        }
+        
+        .footer-links {
+            color: #e4f2e4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links:hover {
+            color: #52b788;
+            padding-right: 5px;
+        }
+        
+        .contact-item {
+            margin-bottom: 10px;
+            color: #e4f2e4;
+        }
+        
+        .contact-item i {
+            color: #52b788;
+            margin-left: 10px;
+            width: 20px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(82, 183, 136, 0.2);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            color: #52b788;
+            transition: all 0.3s ease;
+            border: 1px solid #52b788;
+        }
+        
+        .social-icon:hover {
+            background: #52b788;
+            color: #0e3b2c;
+            transform: translateY(-3px);
+        }
+        
+        .service-badge {
+            background: #52b788;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-tabs-custom {
+            border-bottom: 3px solid #52b788;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #1e4a3b 0%, #2d6a4e 100%);
+            border-radius: 50px;
+            padding: 0.5rem;
+        }
+        
+        .nav-tabs-custom .nav-link {
+            color: white !important;
+            font-weight: 600;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tabs-custom .nav-link i {
+            color: white;
+        }
+        
+        .nav-tabs-custom .nav-link.active {
+            color: #1e4a3b !important;
+            background: #52b788;
+            border: 2px solid white;
+        }
+        
+        .nav-tabs-custom .nav-link.active i {
+            color: #1e4a3b;
+        }
+        
+        .preview-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 2px solid #52b788;
+            margin-bottom: 1.5rem;
+        }
+        
+        .preview-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed #e4f2e4;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .preview-label {
+            font-weight: 600;
+            color: #1e4a3b;
+            width: 45%;
+        }
+        
+        .preview-value {
+            color: #2d6a4e;
+            width: 55%;
+            text-align: left;
+        }
+        
+        .role-item, .policy-item {
+            background: #f8faf8;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e4f2e4;
+        }
+        
+        .org-chart-placeholder {
+            background: #e4f2e4;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px dashed #52b788;
+            margin: 1rem 0;
+        }
+        
+        /* PDF Export Container */
+        #pdf-export-container {
+            position: fixed;
+            top: -99999px;
+            left: -99999px;
+            width: 1200px;
+            background: white;
+            z-index: 9999;
+            padding: 40px;
+            opacity: 0;
+            pointer-events: none;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .pdf-wrapper {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            direction: rtl;
+        }
+        
+        .pdf-cover {
+            background: linear-gradient(135deg, #0e3b2c 0%, #1b5e3f 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 30px;
+            margin-bottom: 40px;
+            border: 4px solid #52b788;
+            text-align: center;
+        }
+        
+        .pdf-section-title {
+            color: #1e4a3b;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 40px 0 25px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid #52b788;
+        }
+        
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 14px;
+            border: 2px solid #52b788;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .pdf-table th {
+            background: #1e4a3b;
+            color: white;
+            padding: 15px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .pdf-table td {
+            padding: 12px 15px;
+            border: 1px solid #e4f2e4;
+            text-align: center;
+        }
+        
+        .pdf-footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            background: linear-gradient(135deg, #0e3b2c 0%, #1b5e3f 100%);
+            color: white;
+            border-radius: 20px;
+            border: 3px solid #52b788;
+        }
+        
+        .form-check-input:checked {
+            background-color: #52b788;
+            border-color: #52b788;
+        }
+        
+        .btn-add {
+            background: #52b788;
+            color: white;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .btn-remove {
+            background: #dc3545;
+            color: white;
+            border-radius: 50px;
+            padding: 5px 15px;
+            font-size: 0.8rem;
+        }
+        
+        .rating-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .rating-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="main-header text-center no-print">
+        <div class="container">
+            <span class="company-badge mb-3">تكاليف | حلول أعمال ذكية</span>
+            <h1 class="display-4 fw-bold mt-3" style="color: white;">
+                <i class="fas fa-building-user me-3"></i>
+                استبيان الدراسة الإدارية والتنظيمية
+            </h1>
+            <p class="lead" style="color: white;">خدمة دراسات الجدوى المصغرة - تحليل الهيكل الإداري والتنظيمي للمشروع</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs -->
+        <ul class="nav nav-tabs-custom nav-fill" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="data-entry-tab" data-bs-toggle="tab" data-bs-target="#dataEntry" type="button" role="tab">
+                    <i class="fas fa-edit me-2"></i>
+                    استبيان المعلومات
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview" type="button" role="tab">
+                    <i class="fas fa-eye me-2"></i>
+                    معاينة التقرير
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <!-- Tab 1: Data Entry -->
+            <div class="tab-pane fade show active" id="dataEntry" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-database me-2"></i>
+                        استبيان الدراسة الإدارية والتنظيمية - البيانات الأساسية
+                    </div>
+                    <div class="card-body">
+                        <!-- رأس الاستبيان مع العملة -->
+                        <div class="client-info-card">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="client-info-title">
+                                        <i class="fas fa-building"></i>
+                                        بيانات العميل
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label required-field">اسم العميل / الشركة</label>
+                                        <input type="text" class="form-control" id="clientName" placeholder="أدخل اسم العميل أو الشركة">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">اسم جهة الاتصال</label>
+                                        <input type="text" class="form-control" id="contactPerson" placeholder="أدخل اسم المسؤول عن المشروع">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="client-info-title">
+                                        <i class="fas fa-address-card"></i>
+                                        بيانات التواصل
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label required-field">رقم الهاتف</label>
+                                        <input type="tel" class="form-control" id="clientPhone" placeholder="أدخل رقم الهاتف">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label required-field">البريد الإلكتروني</label>
+                                        <input type="email" class="form-control" id="clientEmail" placeholder="example@company.com">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">العملة المستخدمة في الرواتب</label>
+                                        <select class="form-select" id="currencySelect">
+                                            <option value="EGP" selected>🇪🇬 جنيه مصري (EGP)</option>
+                                            <option value="SAR">🇸🇦 ريال سعودي (SAR)</option>
+                                            <option value="AED">🇦🇪 درهم إماراتي (AED)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">تاريخ التعبئة</label>
+                                        <input type="date" class="form-control" id="submissionDate" value="2026-03-22">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="currency-badge mt-4" id="currencyDisplay">
+                                        <i class="fas fa-money-bill-wave me-2"></i>العملة: جنيه مصري
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- القسم 1: معلومات المشروع -->
+                        <div class="data-entry-section">
+                            <h4 class="mb-4" style="color: #1e4a3b;">
+                                <i class="fas fa-info-circle me-2"></i>
+                                القسم الأول: معلومات المشروع الأساسية
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label required-field">اسم المشروع</label>
+                                        <input type="text" class="form-control" id="projectName" placeholder="أدخل اسم المشروع">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label required-field">الشكل القانوني للمشروع</label>
+                                        <select class="form-select" id="legalForm">
+                                            <option value="">اختر الشكل القانوني</option>
+                                            <option value="sole">مؤسسة فردية</option>
+                                            <option value="partnership">شركة تضامن</option>
+                                            <option value="llc">شركة ذات مسؤولية محدودة</option>
+                                            <option value="jsc">شركة مساهمة</option>
+                                            <option value="branch">فرع شركة أجنبية</option>
+                                            <option value="other">أخرى</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">الرؤية والرسالة</label>
+                                        <textarea class="form-control" id="visionMission" rows="2" placeholder="رؤية المشروع ورسالته"></textarea>
+                                        <div class="info-text">ما هي الرؤية المستقبلية للمشروع؟ وما هي رسالته الأساسية؟</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- القسم 2: الهيكل التنظيمي -->
+                        <div class="data-entry-section">
+                            <h4 class="mb-4" style="color: #1e4a3b;">
+                                <i class="fas fa-sitemap me-2"></i>
+                                القسم الثاني: الهيكل التنظيمي
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">المناصب الإدارية الرئيسية (أضف المناصب)</label>
+                                        <div id="rolesContainer">
+                                            <div class="role-item" id="role-1">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" placeholder="المسمى الوظيفي" id="roleTitle1">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" placeholder="الوصف الوظيفي المختصر" id="roleDesc1">
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="text" class="form-control" placeholder="الراتب الشهري" id="roleSalary1">
+                                                        <div class="info-text">بالعملة المحددة</div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button class="btn btn-danger btn-sm" onclick="removeRole(1)" style="display:none;" id="removeRole1">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-custom btn-sm mt-2" onclick="addRole()">
+                                            <i class="fas fa-plus-circle me-1"></i> إضافة منصب إداري
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <div class="org-chart-placeholder">
+                                        <i class="fas fa-project-diagram fa-3x mb-2" style="color: #52b788;"></i>
+                                        <p class="mb-0">يمكنك إرفاق الهيكل التنظيمي بشكل منفصل أو توضيح العلاقات الإدارية هنا</p>
+                                        <textarea class="form-control mt-2" id="orgChartDesc" rows="3" placeholder="وصف الهيكل التنظيمي: من يرأس من؟ علاقات الإشراف والمسؤولية..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- القسم 3: نظام الحوافز والرواتب -->
+                        <div class="data-entry-section">
+                            <h4 class="mb-4" style="color: #1e4a3b;">
+                                <i class="fas fa-chart-line me-2"></i>
+                                القسم الثالث: نظام الحوافز والرواتب
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">إجمالي الرواتب الشهرية المتوقعة</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="totalSalaries" placeholder="إجمالي الرواتب">
+                                            <span class="input-group-text bg-light currency-symbol">جنيه</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">نظام الحوافز والمكافآت</label>
+                                        <textarea class="form-control" id="incentiveSystem" rows="2" placeholder="وصف نظام الحوافز (حوافز إنتاجية، عمولات، مكافآت نهاية العام)"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">نظام التأمينات الاجتماعية</label>
+                                        <select class="form-select" id="socialInsurance">
+                                            <option value="">اختر نظام التأمينات</option>
+                                            <option value="full">تأمينات كاملة (تأمين صحي واجتماعي)</option>
+                                            <option value="basic">تأمينات أساسية</option>
+                                            <option value="none">لا يوجد تأمينات</option>
+                                            <option value="private">تأمين خاص</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">نسبة التأمينات الاجتماعية (من الراتب)</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="insurancePercent" placeholder="نسبة التأمينات">
+                                            <span class="input-group-text bg-light">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- القسم 4: السياسات والإجراءات -->
+                        <div class="data-entry-section">
+                            <h4 class="mb-4" style="color: #1e4a3b;">
+                                <i class="fas fa-file-signature me-2"></i>
+                                القسم الرابع: السياسات والإجراءات
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">السياسات الإدارية المتبعة (أضف سياسة)</label>
+                                        <div id="policiesContainer">
+                                            <div class="policy-item" id="policy-1">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <input type="text" class="form-control" placeholder="اسم السياسة" id="policyName1">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" class="form-control" placeholder="وصف السياسة" id="policyDesc1">
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button class="btn btn-danger btn-sm" onclick="removePolicy(1)" style="display:none;" id="removePolicy1">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-custom btn-sm mt-2" onclick="addPolicy()">
+                                            <i class="fas fa-plus-circle me-1"></i> إضافة سياسة
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">نظام العمل وساعات العمل</label>
+                                        <input type="text" class="form-control" id="workingHours" placeholder="مثال: 8 ساعات يومياً، من الأحد إلى الخميس">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">الإجازات السنوية</label>
+                                        <input type="text" class="form-control" id="annualLeaves" placeholder="مثال: 21 يوم إجازة سنوية مدفوعة">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">إجراءات التقييم السنوي للموظفين</label>
+                                        <textarea class="form-control" id="evaluationSystem" rows="2" placeholder="كيف يتم تقييم أداء الموظفين؟ (تقييم شهري، سنوي، معايير التقييم)"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- القسم 5: الكفاءات والمهارات الإدارية -->
+                        <div class="data-entry-section">
+                            <h4 class="mb-4" style="color: #1e4a3b;">
+                                <i class="fas fa-chalkboard-user me-2"></i>
+                                القسم الخامس: الكفاءات والمهارات الإدارية
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">المهارات القيادية المتوفرة</label>
+                                        <textarea class="form-control" id="leadershipSkills" rows="3" placeholder="الخبرات القيادية المتوفرة لدى فريق الإدارة"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">المهارات الإدارية المطلوبة</label>
+                                        <textarea class="form-control" id="requiredMgmtSkills" rows="3" placeholder="المهارات الإدارية التي يحتاجها المشروع (تخطيط، تنظيم، توجيه، رقابة)"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">الخبرات السابقة في نفس المجال</label>
+                                        <textarea class="form-control" id="previousExperience" rows="2" placeholder="خبرات فريق الإدارة في نفس المجال"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">الخطط التدريبية المقترحة</label>
+                                        <textarea class="form-control" id="trainingPlans" rows="2" placeholder="برامج تدريبية لتطوير الكفاءات الإدارية"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- القسم 6: التحديات الإدارية -->
+                        <div class="data-entry-section">
+                            <h4 class="mb-4" style="color: #1e4a3b;">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                القسم السادس: التحديات الإدارية
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">أبرز التحديات الإدارية المتوقعة</label>
+                                        <textarea class="form-control" id="adminChallenges" rows="3" placeholder="مشاكل محتملة في الإدارة، تحديات في التوظيف، صعوبات في التنسيق"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">خطط مواجهة التحديات</label>
+                                        <textarea class="form-control" id="challengeSolutions" rows="3" placeholder="كيف سيتم التعامل مع التحديات الإدارية؟"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label class="form-label">ملاحظات إدارية إضافية</label>
+                                        <textarea class="form-control" id="adminNotes" rows="2" placeholder="أي معلومات إدارية إضافية"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- أزرار الإجراء -->
+                        <div class="text-center mt-4">
+                            <button class="btn btn-custom btn-lg" onclick="refreshPreview()">
+                                <i class="fas fa-sync-alt me-2"></i>
+                                تحديث المعاينة
+                            </button>
+                            <button class="btn btn-custom btn-lg mx-2" onclick="resetForm()">
+                                <i class="fas fa-undo me-2"></i>
+                                إعادة تعيين
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Preview -->
+            <div class="tab-pane fade" id="preview" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-file-alt me-2"></i>
+                        معاينة تقرير الدراسة الإدارية والتنظيمية
+                    </div>
+                    <div class="card-body" id="previewContent">
+                        <!-- سيتم تعبئتها ديناميكياً -->
+                    </div>
+                </div>
+
+                <!-- أزرار التصدير -->
+                <div class="text-center mb-4 no-print">
+                    <button class="btn btn-excel btn-lg mx-2" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel me-2"></i>
+                        تصدير (Excel)
+                    </button>
+                    <button class="btn btn-pdf btn-lg mx-2" onclick="exportToPDF(event)">
+                        <i class="fas fa-file-pdf me-2"></i>
+                        تصدير التقرير (PDF)
+                    </button>
+                    <button class="btn btn-custom btn-lg mx-2" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>
+                        طباعة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer no-print">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 style="color: #52b788; margin-bottom: 20px;">
+                        تكاليف - حلول أعمال ذكية
+                    </h5>
+                    <p style="color: #e4f2e4; line-height: 1.8;">
+                        نقدم استبيانات متخصصة للدراسات الإدارية والتنظيمية لتحليل الهيكل الإداري والكفاءات.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 style="color: #52b788; margin-bottom: 20px;">
+                        <i class="fas fa-address-card me-2"></i>
+                        معلومات الاتصال
+                    </h5>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        القاهرة - مصر
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <a href="tel:+201044391177" class="footer-links">+20 104 439 1177</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:info@takalief.com" class="footer-links">info@takalief.com</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <a href="https://www.takalief.com" class="footer-links" target="_blank">www.takalief.com</a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 style="color: #52b788; margin-bottom: 20px;">
+                        <i class="fas fa-share-alt me-2"></i>
+                        تابعنا على
+                    </h5>
+                    <div class="text-center">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row mt-3">
+                <div class="col-md-6 text-md-start text-center">
+                    <p class="mb-0" style="color: #e4f2e4;">
+                        <i class="fas fa-copyright me-2" style="color: #52b788;"></i>
+                        2026 تكاليف - حلول أعمال ذكية. جميع الحقوق محفوظة
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end text-center">
+                    <a href="#" class="footer-links me-3">سياسة الخصوصية</a>
+                    <a href="#" class="footer-links me-3">شروط الاستخدام</a>
+                    <a href="#" class="footer-links">الدعم الفني</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- PDF Export Container -->
+    <div id="pdf-export-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        let selectedCurrency = 'EGP';
+        let roleCount = 1;
+        let policyCount = 1;
+        
+        const currencySymbols = {
+            'EGP': 'جنيه',
+            'SAR': 'ريال',
+            'AED': 'درهم'
+        };
+        
+        const currencyNames = {
+            'EGP': 'جنيه مصري',
+            'SAR': 'ريال سعودي',
+            'AED': 'درهم إماراتي'
+        };
+        
+        // تحديث العملة
+        document.getElementById('currencySelect').addEventListener('change', function() {
+            selectedCurrency = this.value;
+            document.getElementById('currencyDisplay').innerHTML = `<i class="fas fa-money-bill-wave me-2"></i>العملة: ${currencyNames[selectedCurrency]}`;
+            updateCurrencySymbols();
+        });
+        
+        function updateCurrencySymbols() {
+            const symbol = currencySymbols[selectedCurrency];
+            document.querySelectorAll('.currency-symbol').forEach(el => {
+                el.textContent = symbol;
+            });
+        }
+        
+        // إضافة منصب إداري
+        function addRole() {
+            roleCount++;
+            const container = document.getElementById('rolesContainer');
+            const newRole = document.createElement('div');
+            newRole.className = 'role-item';
+            newRole.id = `role-${roleCount}`;
+            newRole.innerHTML = `
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="المسمى الوظيفي" id="roleTitle${roleCount}">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="الوصف الوظيفي المختصر" id="roleDesc${roleCount}">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" placeholder="الراتب الشهري" id="roleSalary${roleCount}">
+                        <div class="info-text">بالعملة المحددة</div>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-danger btn-sm" onclick="removeRole(${roleCount})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newRole);
+        }
+        
+        function removeRole(id) {
+            const element = document.getElementById(`role-${id}`);
+            if (element) {
+                element.remove();
+            }
+        }
+        
+        // إضافة سياسة
+        function addPolicy() {
+            policyCount++;
+            const container = document.getElementById('policiesContainer');
+            const newPolicy = document.createElement('div');
+            newPolicy.className = 'policy-item';
+            newPolicy.id = `policy-${policyCount}`;
+            newPolicy.innerHTML = `
+                <div class="row">
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" placeholder="اسم السياسة" id="policyName${policyCount}">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" placeholder="وصف السياسة" id="policyDesc${policyCount}">
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-danger btn-sm" onclick="removePolicy(${policyCount})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newPolicy);
+        }
+        
+        function removePolicy(id) {
+            const element = document.getElementById(`policy-${id}`);
+            if (element) {
+                element.remove();
+            }
+        }
+        
+        function getFieldValue(id, defaultValue = '—') {
+            const element = document.getElementById(id);
+            return element && element.value.trim() !== '' ? element.value.trim() : defaultValue;
+        }
+        
+        function getSelectText(id, defaultValue = '—') {
+            const select = document.getElementById(id);
+            const selectedOption = select.options[select.selectedIndex];
+            return selectedOption && selectedOption.value !== '' ? selectedOption.text : defaultValue;
+        }
+        
+        function getRolesList() {
+            let html = '';
+            let totalSalaries = 0;
+            for (let i = 1; i <= roleCount; i++) {
+                const titleElem = document.getElementById(`roleTitle${i}`);
+                const descElem = document.getElementById(`roleDesc${i}`);
+                const salaryElem = document.getElementById(`roleSalary${i}`);
+                if (titleElem && titleElem.value.trim() !== '') {
+                    const salary = parseFloat(salaryElem ? salaryElem.value : 0) || 0;
+                    totalSalaries += salary;
+                    html += `<div class="preview-item"><span class="preview-label">${titleElem.value}</span><span class="preview-value">${descElem ? descElem.value : '—'} | الراتب: ${salaryElem ? salaryElem.value : '—'} ${currencySymbols[selectedCurrency]}</span></div>`;
+                }
+            }
+            if (totalSalaries > 0 && document.getElementById('totalSalaries')) {
+                document.getElementById('totalSalaries').value = totalSalaries.toLocaleString();
+            }
+            return html || '<div class="preview-item"><span class="preview-label">المناصب الإدارية</span><span class="preview-value">—</span></div>';
+        }
+        
+        function getPoliciesList() {
+            let html = '';
+            for (let i = 1; i <= policyCount; i++) {
+                const nameElem = document.getElementById(`policyName${i}`);
+                const descElem = document.getElementById(`policyDesc${i}`);
+                if (nameElem && nameElem.value.trim() !== '') {
+                    html += `<div class="preview-item"><span class="preview-label">${nameElem.value}</span><span class="preview-value">${descElem ? descElem.value : '—'}</span></div>`;
+                }
+            }
+            return html || '<div class="preview-item"><span class="preview-label">السياسات الإدارية</span><span class="preview-value">—</span></div>';
+        }
+        
+        // تحديث المعاينة
+        function refreshPreview() {
+            const previewHtml = `
+                <div class="preview-card">
+                    <h4 style="color: #1e4a3b; margin-bottom: 1.5rem;">
+                        <i class="fas fa-building me-2"></i>
+                        بيانات العميل والمشروع
+                    </h4>
+                    <div class="preview-item">
+                        <span class="preview-label">اسم العميل</span>
+                        <span class="preview-value">${getFieldValue('clientName')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">جهة الاتصال</span>
+                        <span class="preview-value">${getFieldValue('contactPerson')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">رقم الهاتف</span>
+                        <span class="preview-value">${getFieldValue('clientPhone')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">البريد الإلكتروني</span>
+                        <span class="preview-value">${getFieldValue('clientEmail')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">العملة المستخدمة</span>
+                        <span class="preview-value">${currencyNames[selectedCurrency]}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">اسم المشروع</span>
+                        <span class="preview-value">${getFieldValue('projectName')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">الشكل القانوني</span>
+                        <span class="preview-value">${getSelectText('legalForm')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">الرؤية والرسالة</span>
+                        <span class="preview-value">${getFieldValue('visionMission')}</span>
+                    </div>
+                </div>
+                
+                <div class="preview-card">
+                    <h4 style="color: #1e4a3b; margin-bottom: 1.5rem;">
+                        <i class="fas fa-sitemap me-2"></i>
+                        الهيكل التنظيمي والمناصب الإدارية
+                    </h4>
+                    ${getRolesList()}
+                    <div class="preview-item">
+                        <span class="preview-label">وصف الهيكل التنظيمي</span>
+                        <span class="preview-value">${getFieldValue('orgChartDesc')}</span>
+                    </div>
+                </div>
+                
+                <div class="preview-card">
+                    <h4 style="color: #1e4a3b; margin-bottom: 1.5rem;">
+                        <i class="fas fa-chart-line me-2"></i>
+                        نظام الحوافز والرواتب
+                    </h4>
+                    <div class="preview-item">
+                        <span class="preview-label">إجمالي الرواتب الشهرية</span>
+                        <span class="preview-value">${getFieldValue('totalSalaries')} ${currencySymbols[selectedCurrency]}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">نظام الحوافز</span>
+                        <span class="preview-value">${getFieldValue('incentiveSystem')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">نظام التأمينات</span>
+                        <span class="preview-value">${getSelectText('socialInsurance')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">نسبة التأمينات</span>
+                        <span class="preview-value">${getFieldValue('insurancePercent')}%</span>
+                    </div>
+                </div>
+                
+                <div class="preview-card">
+                    <h4 style="color: #1e4a3b; margin-bottom: 1.5rem;">
+                        <i class="fas fa-file-signature me-2"></i>
+                        السياسات والإجراءات
+                    </h4>
+                    ${getPoliciesList()}
+                    <div class="preview-item">
+                        <span class="preview-label">نظام العمل</span>
+                        <span class="preview-value">${getFieldValue('workingHours')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">الإجازات السنوية</span>
+                        <span class="preview-value">${getFieldValue('annualLeaves')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">نظام التقييم</span>
+                        <span class="preview-value">${getFieldValue('evaluationSystem')}</span>
+                    </div>
+                </div>
+                
+                <div class="preview-card">
+                    <h4 style="color: #1e4a3b; margin-bottom: 1.5rem;">
+                        <i class="fas fa-chalkboard-user me-2"></i>
+                        الكفاءات والمهارات الإدارية
+                    </h4>
+                    <div class="preview-item">
+                        <span class="preview-label">المهارات القيادية المتوفرة</span>
+                        <span class="preview-value">${getFieldValue('leadershipSkills')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">المهارات الإدارية المطلوبة</span>
+                        <span class="preview-value">${getFieldValue('requiredMgmtSkills')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">الخبرات السابقة</span>
+                        <span class="preview-value">${getFieldValue('previousExperience')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">الخطط التدريبية</span>
+                        <span class="preview-value">${getFieldValue('trainingPlans')}</span>
+                    </div>
+                </div>
+                
+                <div class="preview-card">
+                    <h4 style="color: #1e4a3b; margin-bottom: 1.5rem;">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        التحديات الإدارية
+                    </h4>
+                    <div class="preview-item">
+                        <span class="preview-label">التحديات المتوقعة</span>
+                        <span class="preview-value">${getFieldValue('adminChallenges')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">خطط المواجهة</span>
+                        <span class="preview-value">${getFieldValue('challengeSolutions')}</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">ملاحظات إضافية</span>
+                        <span class="preview-value">${getFieldValue('adminNotes')}</span>
+                    </div>
+                </div>
+                
+                <div class="preview-card text-center">
+                    <hr>
+                    <p style="color: #1e4a3b; font-weight: 600;">
+                        <i class="fas fa-check-circle me-2"></i>
+                        تم تعبئة الاستبيان الإداري والتنظيمي بنجاح
+                    </p>
+                    <p class="text-muted small">تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</p>
+                </div>
+            `;
+            
+            document.getElementById('previewContent').innerHTML = previewHtml;
+        }
+        
+        // إعادة تعيين النموذج
+        function resetForm() {
+            if (confirm('هل أنت متأكد من إعادة تعيين جميع البيانات؟')) {
+                const inputs = document.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    if (input.type !== 'button' && input.id !== 'currencySelect' && !input.id.startsWith('role') && !input.id.startsWith('policy')) {
+                        if (input.type === 'date') {
+                            input.value = '2026-03-22';
+                        } else if (input.tagName === 'SELECT') {
+                            input.selectedIndex = 0;
+                        } else {
+                            input.value = '';
+                        }
+                    }
+                });
+                
+                // إعادة تعيين المناصب
+                const rolesContainer = document.getElementById('rolesContainer');
+                rolesContainer.innerHTML = `
+                    <div class="role-item" id="role-1">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="المسمى الوظيفي" id="roleTitle1">
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="الوصف الوظيفي المختصر" id="roleDesc1">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" placeholder="الراتب الشهري" id="roleSalary1">
+                                <div class="info-text">بالعملة المحددة</div>
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-danger btn-sm" onclick="removeRole(1)" style="display:none;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                roleCount = 1;
+                
+                // إعادة تعيين السياسات
+                const policiesContainer = document.getElementById('policiesContainer');
+                policiesContainer.innerHTML = `
+                    <div class="policy-item" id="policy-1">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" placeholder="اسم السياسة" id="policyName1">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="وصف السياسة" id="policyDesc1">
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn btn-danger btn-sm" onclick="removePolicy(1)" style="display:none;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                policyCount = 1;
+                
+                document.getElementById('currencySelect').value = 'EGP';
+                selectedCurrency = 'EGP';
+                updateCurrencySymbols();
+                refreshPreview();
+                alert('تم إعادة تعيين جميع البيانات بنجاح');
+            }
+        }
+        
+        // تصدير Excel
+        function exportToExcel() {
+            const clientName = getFieldValue('clientName', 'عميل');
+            const projectName = getFieldValue('projectName', 'مشروع');
+            
+            // جمع بيانات المناصب
+            let rolesText = '';
+            for (let i = 1; i <= roleCount; i++) {
+                const titleElem = document.getElementById(`roleTitle${i}`);
+                const descElem = document.getElementById(`roleDesc${i}`);
+                const salaryElem = document.getElementById(`roleSalary${i}`);
+                if (titleElem && titleElem.value.trim() !== '') {
+                    rolesText += `${titleElem.value} - ${descElem ? descElem.value : ''} (الراتب: ${salaryElem ? salaryElem.value : ''})\n`;
+                }
+            }
+            
+            // جمع بيانات السياسات
+            let policiesText = '';
+            for (let i = 1; i <= policyCount; i++) {
+                const nameElem = document.getElementById(`policyName${i}`);
+                const descElem = document.getElementById(`policyDesc${i}`);
+                if (nameElem && nameElem.value.trim() !== '') {
+                    policiesText += `${nameElem.value}: ${descElem ? descElem.value : ''}\n`;
+                }
+            }
+            
+            const excelData = [
+                ['استبيان الدراسة الإدارية والتنظيمية - تكاليف'],
+                ['تاريخ التقرير', new Date().toLocaleDateString('ar-EG')],
+                ['العملة', currencyNames[selectedCurrency]],
+                [],
+                ['1. بيانات العميل'],
+                ['اسم العميل', getFieldValue('clientName')],
+                ['جهة الاتصال', getFieldValue('contactPerson')],
+                ['رقم الهاتف', getFieldValue('clientPhone')],
+                ['البريد الإلكتروني', getFieldValue('clientEmail')],
+                [],
+                ['2. معلومات المشروع'],
+                ['اسم المشروع', getFieldValue('projectName')],
+                ['الشكل القانوني', getSelectText('legalForm')],
+                ['الرؤية والرسالة', getFieldValue('visionMission')],
+                [],
+                ['3. الهيكل التنظيمي'],
+                ['المناصب الإدارية', rolesText],
+                ['وصف الهيكل التنظيمي', getFieldValue('orgChartDesc')],
+                [],
+                ['4. نظام الحوافز والرواتب'],
+                ['إجمالي الرواتب', getFieldValue('totalSalaries') + ' ' + currencySymbols[selectedCurrency]],
+                ['نظام الحوافز', getFieldValue('incentiveSystem')],
+                ['نظام التأمينات', getSelectText('socialInsurance')],
+                ['نسبة التأمينات', getFieldValue('insurancePercent') + '%'],
+                [],
+                ['5. السياسات والإجراءات'],
+                ['السياسات الإدارية', policiesText],
+                ['نظام العمل', getFieldValue('workingHours')],
+                ['الإجازات السنوية', getFieldValue('annualLeaves')],
+                ['نظام التقييم', getFieldValue('evaluationSystem')],
+                [],
+                ['6. الكفاءات والمهارات الإدارية'],
+                ['المهارات القيادية المتوفرة', getFieldValue('leadershipSkills')],
+                ['المهارات الإدارية المطلوبة', getFieldValue('requiredMgmtSkills')],
+                ['الخبرات السابقة', getFieldValue('previousExperience')],
+                ['الخطط التدريبية', getFieldValue('trainingPlans')],
+                [],
+                ['7. التحديات الإدارية'],
+                ['التحديات المتوقعة', getFieldValue('adminChallenges')],
+                ['خطط المواجهة', getFieldValue('challengeSolutions')],
+                ['ملاحظات إضافية', getFieldValue('adminNotes')],
+                [],
+                ['توقيع العميل', '_________________________'],
+                ['تاريخ التسليم', new Date().toLocaleDateString('ar-EG')],
+                [],
+                ['للتواصل: info@takalief.com | +20 104 439 1177'],
+                ['www.takalief.com']
+            ];
+            
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+            ws['!cols'] = [{ wch: 35 }, { wch: 50 }];
+            XLSX.utils.book_append_sheet(wb, ws, 'الدراسة الإدارية');
+            XLSX.writeFile(wb, `Admin_Study_${projectName.replace(/\s/g, '_')}_${new Date().toISOString().slice(0,10)}.xlsx`);
+            
+            alert('تم تصدير استبيان Excel بنجاح!');
+        }
+        
+        // تصدير PDF
+        async function exportToPDF(event) {
+            try {
+                const exportBtn = event.target;
+                const originalText = exportBtn.innerHTML;
+                exportBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> جاري إعداد التقرير...';
+                exportBtn.disabled = true;
+                
+                const pdfContainer = document.getElementById('pdf-export-container');
+                pdfContainer.innerHTML = '';
+                pdfContainer.style.opacity = '1';
+                pdfContainer.style.position = 'absolute';
+                pdfContainer.style.top = '0';
+                pdfContainer.style.left = '0';
+                pdfContainer.style.zIndex = '9999';
+                
+                const clientName = getFieldValue('clientName', 'غير محدد');
+                const projectName = getFieldValue('projectName', 'غير محدد');
+                
+                // جمع بيانات المناصب
+                let rolesHtml = '';
+                for (let i = 1; i <= roleCount; i++) {
+                    const titleElem = document.getElementById(`roleTitle${i}`);
+                    const descElem = document.getElementById(`roleDesc${i}`);
+                    const salaryElem = document.getElementById(`roleSalary${i}`);
+                    if (titleElem && titleElem.value.trim() !== '') {
+                        rolesHtml += `实践<td>${titleElem.value}</td><td>${descElem ? descElem.value : '—'}</td><td>${salaryElem ? salaryElem.value : '—'} ${currencySymbols[selectedCurrency]}</td> </tr>`;
+                    }
+                }
+                
+                // جمع بيانات السياسات
+                let policiesHtml = '';
+                for (let i = 1; i <= policyCount; i++) {
+                    const nameElem = document.getElementById(`policyName${i}`);
+                    const descElem = document.getElementById(`policyDesc${i}`);
+                    if (nameElem && nameElem.value.trim() !== '') {
+                        policiesHtml += `<tr><td>${nameElem.value}</td><td>${descElem ? descElem.value : '—'}</td></tr>`;
+                    }
+                }
+                
+                const pdfWrapper = document.createElement('div');
+                pdfWrapper.className = 'pdf-wrapper';
+                
+                // الغلاف
+                const coverPage = document.createElement('div');
+                coverPage.className = 'pdf-cover';
+                coverPage.innerHTML = `
+                    <h1>الدراسة الإدارية والتنظيمية</h1>
+                    <h3>Administrative & Organizational Study</h3>
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; margin-top: 30px;">
+                        <p style="font-size: 20px;"><i class="fas fa-user me-2"></i>العميل: ${clientName}</p>
+                        <p style="font-size: 18px;"><i class="fas fa-project-diagram me-2"></i>المشروع: ${projectName}</p>
+                        <p style="font-size: 18px;"><i class="fas fa-money-bill-wave me-2"></i>العملة: ${currencyNames[selectedCurrency]}</p>
+                        <p style="font-size: 18px;"><i class="fas fa-calendar me-2"></i>تاريخ التقرير: ${new Date().toLocaleDateString('ar-EG')}</p>
+                    </div>
+                `;
+                pdfWrapper.appendChild(coverPage);
+                
+                // صفحة المعلومات الأساسية
+                const infoPage = document.createElement('div');
+                infoPage.style.pageBreakBefore = 'always';
+                infoPage.style.padding = '20px';
+                infoPage.innerHTML = `
+                    <h2 class="pdf-section-title">بيانات العميل والمشروع</h2>
+                    <table class="pdf-table">
+                        <tr><th>البيان</th><th>القيمة</th> </tr>
+                        <tr><td>اسم العميل</td><td>${getFieldValue('clientName')}</td> </tr>
+                        <tr><td>جهة الاتصال</td><td>${getFieldValue('contactPerson')}</td> </tr>
+                        <tr><td>رقم الهاتف</td><td>${getFieldValue('clientPhone')}</td> </tr>
+                        <tr><td>البريد الإلكتروني</td><td>${getFieldValue('clientEmail')}</td> </tr>
+                        <tr><td>اسم المشروع</td><td>${getFieldValue('projectName')}</td> </tr>
+                        <tr><td>الشكل القانوني</td><td>${getSelectText('legalForm')}</td> </tr>
+                        <tr><td>الرؤية والرسالة</td><td>${getFieldValue('visionMission')}</td> </tr>
+                    </table>
+                    
+                    <h2 class="pdf-section-title">الهيكل التنظيمي</h2>
+                    <table class="pdf-table">
+                        <tr><th>المسمى الوظيفي</th><th>الوصف الوظيفي</th><th>الراتب الشهري</th> </tr>
+                        ${rolesHtml || '<tr><td colspan="3">—</td></tr>'}
+                    </table>
+                    <table class="pdf-table">
+                        <tr><td>وصف الهيكل التنظيمي</td><td>${getFieldValue('orgChartDesc')}</td> </tr>
+                    </table>
+                `;
+                pdfWrapper.appendChild(infoPage);
+                
+                // صفحة الحوافز والسياسات
+                const policiesPage = document.createElement('div');
+                policiesPage.style.pageBreakBefore = 'always';
+                policiesPage.style.padding = '20px';
+                policiesPage.innerHTML = `
+                    <h2 class="pdf-section-title">نظام الحوافز والرواتب</h2>
+                    <table class="pdf-table">
+                        <tr><td>إجمالي الرواتب الشهرية</td><td>${getFieldValue('totalSalaries')} ${currencySymbols[selectedCurrency]}</td> </tr>
+                        <tr><td>نظام الحوافز</td><td>${getFieldValue('incentiveSystem')}</td> </tr>
+                        <tr><td>نظام التأمينات</td><td>${getSelectText('socialInsurance')}</td> </tr>
+                        <tr><td>نسبة التأمينات</td><td>${getFieldValue('insurancePercent')}%</td> </tr>
+                    </table>
+                    
+                    <h2 class="pdf-section-title">السياسات والإجراءات</h2>
+                    <table class="pdf-table">
+                        <tr><th>اسم السياسة</th><th>الوصف</th> </tr>
+                        ${policiesHtml || '<tr><td colspan="2">—</td></tr>'}
+                    </table>
+                    <table class="pdf-table">
+                        <tr><td>نظام العمل</td><td>${getFieldValue('workingHours')}</td> </tr>
+                        <tr><td>الإجازات السنوية</td><td>${getFieldValue('annualLeaves')}</td> </tr>
+                        <tr><td>نظام التقييم</td><td>${getFieldValue('evaluationSystem')}</td> </tr>
+                    </table>
+                `;
+                pdfWrapper.appendChild(policiesPage);
+                
+                // صفحة الكفاءات والتحديات
+                const skillsPage = document.createElement('div');
+                skillsPage.style.pageBreakBefore = 'always';
+                skillsPage.style.padding = '20px';
+                skillsPage.innerHTML = `
+                    <h2 class="pdf-section-title">الكفاءات والمهارات الإدارية</h2>
+                    <table class="pdf-table">
+                        <tr><td>المهارات القيادية المتوفرة</td><td>${getFieldValue('leadershipSkills')}</td> </tr>
+                        <tr><td>المهارات الإدارية المطلوبة</td><td>${getFieldValue('requiredMgmtSkills')}</td> </tr>
+                        <tr><td>الخبرات السابقة</td><td>${getFieldValue('previousExperience')}</td> </tr>
+                        <tr><td>الخطط التدريبية</td><td>${getFieldValue('trainingPlans')}</td> </tr>
+                    </table>
+                    
+                    <h2 class="pdf-section-title">التحديات الإدارية</h2>
+                    <table class="pdf-table">
+                        <tr><td>التحديات المتوقعة</td><td>${getFieldValue('adminChallenges')}</td> </tr>
+                        <tr><td>خطط المواجهة</td><td>${getFieldValue('challengeSolutions')}</td> </tr>
+                        <tr><td>ملاحظات إضافية</td><td>${getFieldValue('adminNotes')}</td> </tr>
+                    </table>
+                `;
+                pdfWrapper.appendChild(skillsPage);
+                
+                // صفحة الختام
+                const closingPage = document.createElement('div');
+                closingPage.style.pageBreakBefore = 'always';
+                closingPage.style.padding = '40px 20px';
+                closingPage.innerHTML = `
+                    <div class="pdf-footer">
+                        <div class="company">تكاليف - حلول أعمال ذكية</div>
+                        <div>القاهرة - مصر | +20 104 439 1177 | info@takalief.com</div>
+                        <hr style="width: 200px; margin: 20px auto;">
+                        <p>تم تعبئة هذا الاستبيان الإداري والتنظيمي لإعداد الدراسة الإدارية للمشروع</p>
+                        <p>تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</p>
+                        <p style="margin-top: 30px;">توقيع العميل: _________________________</p>
+                        <p>جميع الحقوق محفوظة © 2026</p>
+                    </div>
+                `;
+                pdfWrapper.appendChild(closingPage);
+                
+                pdfContainer.appendChild(pdfWrapper);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                const canvas = await html2canvas(pdfContainer, { scale: 2, backgroundColor: '#ffffff' });
+                const { jsPDF } = window.jspdf;
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210;
+                const pageHeight = 297;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                heightLeft -= pageHeight;
+                
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+                    heightLeft -= pageHeight;
+                }
+                
+                pdf.save(`Admin_Study_${projectName.replace(/[^\u0600-\u06FFa-zA-Z0-9]/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`);
+                
+                pdfContainer.innerHTML = '';
+                pdfContainer.style.opacity = '0';
+                pdfContainer.style.position = 'fixed';
+                pdfContainer.style.top = '-99999px';
+                
+                exportBtn.innerHTML = originalText;
+                exportBtn.disabled = false;
+                alert('تم تصدير استبيان PDF بنجاح!');
+                
+            } catch (error) {
+                alert('حدث خطأ أثناء تصدير التقرير: ' + error.message);
+                const exportBtn = event.target;
+                exportBtn.innerHTML = '<i class="fas fa-file-pdf me-2"></i> تصدير التقرير (PDF)';
+                exportBtn.disabled = false;
+            }
+        }
+        
+        // تهيئة الصفحة
+        window.onload = function() {
+            updateCurrencySymbols();
+            refreshPreview();
+        };
+    </script>
+</body>
+</html>
